@@ -1,3 +1,6 @@
+body{
+  font-family: sans-serif;
+}
 .App {
   text-align: center;
 }
@@ -36,3 +39,22 @@
     transform: rotate(360deg);
   }
 }
+
+
+.iconButton {
+  transition: all 0.2s !important;
+}
+.iconButton:hover{
+  background: darkgray !important;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, 0.4);
+}
+
+.todocard{
+  transition: all 0.3s !important;
+}
+.todocard:hover{
+  padding-bottom: 20px;
+  padding-top: 20px;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, 0.4);
+}
+
