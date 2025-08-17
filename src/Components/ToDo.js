@@ -14,11 +14,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 
 
 export default function ToDo({todo,handleCheck}){
   const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [updatedTodo,setUpdatedTodo] = useState({
+    title: todo.title,
+    details: todo.details
+  })
   const {todos, setTodos} = useContext(TodosContext)
   function handleCheckClick(){
        const updatetodo = todos.map((t)=>{
@@ -37,19 +43,43 @@ export default function ToDo({todo,handleCheck}){
   setOpen(false);
 }
 
+
+  function handleUpdateConfirm() {
+  const updatedtodos = todos.map((t)=>{
+    if (t.id == todo.id){
+      return {...t , title:updatedTodo.title , details:updatedTodo.details}
+    }else{
+      return t
+    }
+  })
+  setTodos(updatedtodos);
+  setUpdate(false);
+  }
   
   function handleClickOpen(){
     setOpen(true);
   };
 
-  function handleClose(){
+
+  function handleUpdateClick(){
+    setUpdate(true);
+  };
+
+
+  function handleDeleteClose(){
     setOpen(false);
-  }
+  };
+
+  function handleUpdateClose(){
+    setUpdate(false);
+  };
+
+
     return(
         <>
       <Dialog style={{direction:"rtl"}}
         open={open}
-        onClose={handleClose}
+        onClose={handleDeleteClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -62,12 +92,62 @@ export default function ToDo({todo,handleCheck}){
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>لا اوافق</Button>
+          <Button onClick={handleDeleteClose}>لا اوافق</Button>
           <Button onClick={handleDeleteConfirm} autoFocus>
             موافق
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog style={{direction:"rtl"}}
+        open={update}
+        onClose={handleUpdateClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"تعديل المهمة"}
+        </DialogTitle>
+        <DialogContent>
+           <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="name"
+              name="email"
+              label="عنوان المهمة"
+              fullWidth
+              variant="standard"
+              value={updatedTodo.title}
+              onChange={(e) => {
+                setUpdatedTodo({...updatedTodo , title: e.target.value})
+              }}
+            />
+
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="name"
+              name="email"
+              label="التفاصيل"
+              fullWidth
+              variant="standard"
+              value={updatedTodo.details}
+              onChange={(e) => {
+                setUpdatedTodo({...updatedTodo , details: e.target.value})
+              }}
+            />
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateClose}>لا اوافق</Button>
+          <Button onClick={handleUpdateConfirm} autoFocus>
+            تعديل
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     <Card className='todocard'
     sx={{ minWidth: 275 , background:"#7A1CAC" , color:"white",marginTop:"20px"}} >
       <CardContent>
@@ -99,6 +179,7 @@ export default function ToDo({todo,handleCheck}){
             </IconButton>
 
             <IconButton 
+              onClick={handleUpdateClick}
               className='iconButton'
               aria-label="edit"
               style={{color:"blue",background:"white",border:"3px solid blue"}}>
