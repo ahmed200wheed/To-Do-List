@@ -35,12 +35,14 @@ export default function ToDo({todo,handleCheck}){
          return t;
         });
         setTodos(updatetodo);
+        localStorage.setItem("todos" , JSON.stringify(updatetodo));
   }
 
   function handleDeleteConfirm() {
   const updatedTodos = todos.filter((t) => t.id != todo.id);
   setTodos(updatedTodos);
   setOpen(false);
+  localStorage.setItem("todos" , JSON.stringify(updatedTodos));
 }
 
 
@@ -54,6 +56,7 @@ export default function ToDo({todo,handleCheck}){
   })
   setTodos(updatedtodos);
   setUpdate(false);
+  localStorage.setItem("todos" , JSON.stringify(updatedtodos));
   }
   
   function handleClickOpen(){
